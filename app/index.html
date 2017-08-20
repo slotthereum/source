@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="Open source decentralized Ethereum blockchain based slot game">
+    <meta name="keywords" content="Ethereum,Blockchain,Slot,Game,Decentralized,Open Source">
+    <meta name="author" content="slotthereum.github.io">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Slotthereum</title>
+
+    <link rel="icon" sizes="192x192" href="/images/icons-192x192.png">
+    <link rel="shortcut icon" href="/images/icons-72x72.png">
+    <link rel="apple-touch-icon" href="/images/icons-72x72.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/icons-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/icons-144x144.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/icons-180x180.png">
+
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="/bower_components/materialize/dist/css/materialize.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css styles/main.css -->
+    <link rel="stylesheet" href="styles/nouislider.css" />
+    <link rel="stylesheet" href="styles/materialize.css" media="screen,projection" />
+    <link rel="stylesheet" href="styles/main.css" />
+    <!-- endbuild -->
+
+    <!-- Import Google Icon Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+  </head>
+  <body class="">
+    <!--[if IE]>
+      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+  <div class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper">
+        <a id="logo-btn"><img src="/images/icons-72x72.png" class="logo"></a>
+        <a class="brand-logo modal-trigger center" href="#slotthereum">Slotthereum</a>
+        <a id="avatar" class="avatar2 eth-address dropdown-button" data-activates="dropdown-nav"></a>
+        <ul id="dropdown-nav" class="dropdown-content"></ul>
+      </div>
+    </nav>
+
+      <ul id="tabs" class="tabs tabs-fixed-width main-navbar">
+        <li class="tab col s2"><a class="active" href="#intro">Slotthereum</a></li>
+        <li class="tab col s2"><a class="active" href="#play-now">Play Now</a></li>
+        <li class="tab col s2"><a class="active" href="#latest-results">Latest results</a></li>
+      </ul>
+  </div>
+
+  <div id="loading">
+    <div class="progress blue lighten-4">
+        <div class="indeterminate orange lighten-2"></div>
+    </div>
+  </div>
+
+  <!-- round placeholder template -->
+  <div id="round_placeholder_template" class=template>
+    <div id="round_{round_id}_holder"></div>
+  </div>
+
+  <!-- game placeholder template -->
+  <div id="game_placeholder_template" class=template>
+    <div id="game_{game_id}_holder">
+      <div id="rounds_{game_id}" class="col s12 m12"></div>
+    </div>
+  </div>
+
+  <!-- game template -->
+  <div id="game_template" class=template>
+    <div id="player_{player}_game_{game_id}" class="card blue z-depth-1 round game">
+      {betButton}
+      <div class="card-content white-text game-content">
+        <div class="eth-address game-player">{player}</div>
+        <span class="card-title game-title">Game #{game_id}</span>
+        <table class="centered round-data">
+          <tbody>
+            <tr>
+              <td>Betting on number {bet}</td>
+              <td>Amount {amount} ETH</td>
+              <td>For a prize of {prize} ETH</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- bet template -->
+  <script type="text/html" id="bet_template">
+    <li id="bet_{bet_id}" class="collection-item avatar {win}">
+      <div class="eth-address" style="">{origin}</div>
+      <span class="title flow-text">{origin}</span>
+      <p class="secondary-content title">{amount} ether</p>
+      <!-- <span class="confirmation-badge new badge blue lighten-2" data-badge-caption="confirmations">0</span> -->
+    </li>
+  </script>
+
+  <!-- bet button template -->
+  <script type="text/html" id="bet_button_template">
+    <a class="btn-floating halfway-fab orange lighten-2 bet-btn pulse modal-trigger" href="#bet-modal"><i class="material-icons">add</i></a>
+  </script>
+
+  <!-- bet number template -->
+  <script type="text/html" id="bet_number_template">
+    <a class="btn-floating halfway-fab bet-btn {color} lighten-2 valign-wrapper center-align number">{number}</a>
+  </script>
+
+  <div class="container main-container">
+
+    <div id="play-now" class="col s12">
+
+      <div class="row">
+        <div class="col s12 m12">
+          <div class="card green lighten-2 z-depth-1 round">
+            <div class="card-content white-text bet-content center-align">
+              <ul class="collection with-header left-align" style="display: none;">
+                <li class="collection-header"><h4><i class="material-icons">play_for_work</i> Place your bet</h5></li>
+              </ul>
+
+              <div class="row">
+                <div class="col s6">
+                  <ul class="collection with-header left-align">
+                    <li class="collection-header"><h5><i class="material-icons">attach_money</i> Amount</h5></li>
+                  </ul>
+                  <label id="amount_eth">ETH</label>
+                  <input id="amount" type="number" class="valid" step="0.01" min="0.01" max="5" value="1">
+                </div>
+                <div class="col s6">
+                  <ul class="collection with-header left-align">
+                    <li class="collection-header"><h5><i class="material-icons">bubble_chart</i> Your numbers</h5></li>
+                  </ul>
+                  <div class="range-field">
+                    <div id="bet_range"></div>
+                  </div>
+                </div>
+              </div>
+
+              <ul class="collection with-header center-align" style="margin-top: 45px">
+                <li class="collection-header"><h5><!-- <i class="material-icons">local_atm</i> --> Betting <span id="bet_amount">0,01</span> ETH on <span id="bet_numbers">5 numbers</span> for a profit of <span id="bet_profit">0,005</span> ETH</h5></li>
+                <li>
+                  <div class="your-pick">
+                    <!-- <label>Your Pick</label> -->
+                    <div id="bet-number-0" class="btn-floating valign-wrapper center-align blue waves-effect bet-number-btn">0</div>
+                    <div id="bet-number-1" class="btn-floating valign-wrapper center-align blue waves-effect bet-number-btn">1</div>
+                    <div id="bet-number-2" class="btn-floating valign-wrapper center-align blue waves-effect bet-number-btn">2</div>
+                    <div id="bet-number-3" class="btn-floating valign-wrapper center-align blue waves-effect bet-number-btn">3</div>
+                    <div id="bet-number-4" class="btn-floating valign-wrapper center-align blue waves-effect bet-number-btn">4</div>
+                    <div id="bet-number-5" class="btn-floating valign-wrapper center-align blue waves-effect bet-number-btn">5</div>
+                    <div id="bet-number-6" class="btn-floating valign-wrapper center-align blue waves-effect bet-number-btn">6</div>
+                    <div id="bet-number-7" class="btn-floating valign-wrapper center-align blue waves-effect bet-number-btn">7</div>
+                    <div id="bet-number-8" class="btn-floating valign-wrapper center-align blue waves-effect bet-number-btn">8</div>
+                    <div id="bet-number-9" class="btn-floating valign-wrapper center-align blue waves-effect bet-number-btn">9</div>
+                    <a id="bet-btn" class="waves-effect waves btn blue right-align"><i id="selected-number" class="left"></i> Place bet</a>
+                  </div>
+                </li>
+              </ul>
+
+              <div id="holder">
+                  <ul id="a" class="strip">
+                      <li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li>
+                      <li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li>
+                      <li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li>
+                  </ul>
+              </div>
+
+              <!-- <div class="row" id="confirmations">
+                <div class="col s12">
+                  <div class="progress blue lighten-4">
+                      <div class="indeterminate orange lighten-2"></div>
+                  </div>
+                  <span class="wait_transaction right">Waiting transaction to be confirmed.</span>
+                </div>
+              </div> -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="latest-results" class="col s12">
+      <div class="row">
+        <div class="col s12 m12">
+          <div id="all_games_holder">all games...</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="intro" class="col s12">
+      <div class="row">
+        <div class="col s12 m12">
+          <div class="card green lighten-2 z-depth-1 round">
+            <div class="card-content white-text">
+              <ul class="collection with-header">
+                <li class="collection-header"><h5><i class="material-icons">help</i> What is Slotthereum?</h5></li>
+                <li class="collection-item"><i class="material-icons left">stars</i> Slotthereum is a decentralized open source  Ethereum based lottery</li>
+                <li class="collection-item"><i class="material-icons left">stars</i> Every Slotthereum round a random number is fetched from the hash of one of the latest 256 blocks from Ethereum blockchain</li>
+                <li class="collection-item"><i class="material-icons left">stars</i> Slotthereum has NO house edge, NO signup, no deposits</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12">
+          <div class="card green lighten-2 z-depth-1 round">
+            <div class="card-content white-text">
+              <ul class="collection with-header">
+                <li class="collection-header"><h5><i class="material-icons">question_answer</i> How does Slotthereum works?</h5></li>
+                <li class="collection-item"><i class="material-icons left">looks_one</i> Players have to guess a number between 0-9</li>
+                <li class="collection-item"><i class="material-icons left">looks_two</i> The contract will reveal the lucky number right after the bet is placed</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12">
+          <div class="card green lighten-2 z-depth-1 round">
+            <div class="card-content white-text">
+              <ul class="collection with-header">
+                <li class="collection-header"><h5><i class="material-icons">done_all</i> Slotthereum vs Etheroll</h5></li>
+                <li class="collection-item"><i class="material-icons left">done</i> Slotthereum has NO fees <!-- <i class="em em-money_with_wings"></i> --></li>
+                <li class="collection-item"><i class="material-icons left">done</i> Slotthereum does NOT use oracles or external contract transactions <!-- <i class="em em-imp"></i> --></li>
+                <li class="collection-item"><i class="material-icons left">done</i> Slotthereum does NOT keep records or check IP addresses <!-- <i class="em em-mag"></i> --></li>
+                <!-- <li class="collection-item"><i class="material-icons left">done</i> Players bet against each other and not againt the house</li> -->
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12 center-align">
+          <a id="play-now-btn" href="#play-now" class="waves-effect waves btn orange lighten-2 pulse"><i class="material-icons left">play_arrow</i> PLAY NOW</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Alert -->
+  <div id="alert1" class="modal">
+    <div class="modal-content">
+      <h4 class="centered">Account not found</h4>
+      <div id="using-mist-metamask" class="alert-note">
+        <blockquote>
+          You are using MetaMask, Mist or another web3 compatible browser, but your account is locked or not authorized to interact with Slotthereum.
+        </blockquote>
+        <blockquote>
+          Unluck or authorize your account and refresh the page.
+        </blockquote>
+      </div>
+      <blockquote id="using-localhost" class="alert-note">
+        You are connected to http://localhost:8545 but there are no accounts available.
+      </blockquote>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-action modal-close waves-effect btn-flat"><i class="material-icons left">close</i>Close</a>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col l12 s12 white-text">
+          <a class="waves-effect waves btn-flat left white-text" href="https://etherscan.io/address/0x5a2a454675c1b659caa58b5675ee759b992b84b1#code" target="_blank"><i class="material-icons left">code</i>CONTRACT</a>
+          <a id="trollbox_btn" class="waves-effect waves btn-flat right white-text"><i class="material-icons left">chat</i>TROLLBOX</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container center-align">
+        <span>2017 Slotthereum</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Google Analytics -->
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-103132887-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+  <!-- build:js scripts/vendor.js -->
+  <!-- bower:js -->
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/materialize/dist/js/materialize.js"></script>
+  <script src="/bower_components/bignumber.js/bignumber.js"></script>
+  <script src="/bower_components/crypto-js/index.js"></script>
+  <script src="/bower_components/web3/dist/web3.js"></script>
+  <script src="/bower_components/web3/dist/web3.min.js"></script>
+  <script src="/bower_components/blockies/blockies.js"></script>
+  <script src="/bower_components/async/dist/async.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- Gitter -->
+  <script>
+    ((window.gitter = {}).chat = {}).options = {
+      room: 'lotthereum-github-io/Lobby',
+      activationElement: '#trollbox_btn',
+    };
+  </script>
+  <script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+
+  <!-- build:js scripts/main.js -->
+  <script src="scripts/blockies.js"></script>
+  <script src="scripts/jquery.easing.1.3.js"></script>
+  <script src="scripts/wNumb.js"></script>
+  <script src="scripts/nouislider.js"></script>
+  <script src="scripts/slotthereum.js"></script>
+  <!-- endbuild -->
+
+  <script type="text/javascript">
+    window.addEventListener('load', function() {
+        // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+        if (typeof web3 !== 'undefined') {
+            // Use Mist/MetaMask's provider
+            window.web3 = new Web3(web3.currentProvider);
+            $('#using-mist-metamask').css('display', 'block');
+        } else {
+            console.log('No web3? You should consider trying MetaMask!')
+            // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
+            window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+            $('#using-localhost').css('display', 'block');
+        }
+
+        // Net check
+        web3.version.getNetwork((err, netId) => {
+            window.contract_address = '0x537c7b0ad61e980ed3acfbd0b83a02ea18baffa5';
+            switch (netId) {
+                case '1':
+                    console.log('This is mainnet')
+                    window.contract_address = '0x5a2a454675c1b659caa58b5675ee759b992b84b1'  // 1th mainnet
+                    break
+                case '2':
+                    console.log('This is the deprecated Morden test network.')
+                    break
+                case '3':
+                    console.log('This is the ropsten test network.')
+                    window.contract_address = '0xdffe64e43f75c35bfdf361a4fc063b9a88e15449'  // 1st ropsten
+                    break
+                default:
+                    console.log('This is an unknown network.')
+            }
+            console.log('Contract address: ' + window.contract_address)
+            g = new Slotthereum();
+        });
+    })
+  </script>
+
+  </body>
+</html>
