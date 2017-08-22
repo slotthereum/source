@@ -161,7 +161,7 @@ function Slotthereum() {
     this.placeBet = function (amount, a, b) {
         var value = amount * 1000000000000000000
         // var gas = 100000000;
-        var gas = 300000;
+        var gas = 200000;
         console.log('sending from: ' + self.account)
 
         self.contractInstance.placeBet(a, b, {from: self.account, value: value, gas: gas}, function(error, result) {
@@ -272,8 +272,8 @@ function Slotthereum() {
 
         var rangeAndPlayer = {player: self.account, fromBlock: currentBlockNumber, toBlock: 'latest'};
 
-        self.betPlacedEvent = self.contractInstance.BetPlaced(rangeAndPlayer);
-        self.betPlacedEvent.watch(self.betPlaced);
+        // self.betPlacedEvent = self.contractInstance.BetPlaced(rangeAndPlayer);
+        // self.betPlacedEvent.watch(self.betPlaced);
 
         self.gameWinEvent = self.contractInstance.GameWin(rangeAndPlayer);
         self.gameWinEvent.watch(self.gameWon);
@@ -282,23 +282,23 @@ function Slotthereum() {
         self.gameLooseEvent.watch(self.gameLoosed);
     }
 
-    this.betPlaced = function (error, event) {
-        if (error) {
-            console.log('ERROR:');
-            console.log(error);
-        } else if (self.account == event.args.player) {
-            console.log('betPlaced event player: ' + event.args.player);
-            console.log('event.args.gameId: ' + event.args.gameId);
-            console.log('event.args.amount: ' + event.args.amount);
-            console.log('event.args.start: ' + event.args.start);
-            console.log('event.args.end: ' + event.args.end);
+    // this.betPlaced = function (error, event) {
+    //     if (error) {
+    //         console.log('ERROR:');
+    //         console.log(error);
+    //     } else if (self.account == event.args.player) {
+    //         console.log('betPlaced event player: ' + event.args.player);
+    //         console.log('event.args.gameId: ' + event.args.gameId);
+    //         console.log('event.args.amount: ' + event.args.amount);
+    //         console.log('event.args.start: ' + event.args.start);
+    //         console.log('event.args.end: ' + event.args.end);
 
-            $('#bet-btn').removeClass('disabled');
-            $('#bet-btn').addClass('pulse');
-            $('#confirmations').css('opacity', 0);
-            Materialize.toast('New bet placed', 5000, 'rounded');
-        }
-    }
+    //         $('#bet-btn').removeClass('disabled');
+    //         $('#bet-btn').addClass('pulse');
+    //         $('#confirmations').css('opacity', 0);
+    //         Materialize.toast('New bet placed', 5000, 'rounded');
+    //     }
+    // }
 
     this.gameWon = function (error, event) {
         if (error) {
@@ -314,7 +314,7 @@ function Slotthereum() {
             console.log('event.args.number: ' + event.args.number);
             console.log('event.args.prize: ' + event.args.prize);
             self.stop(event.args.number);
-            Materialize.toast('WIN!', 150000, 'rounded, red');
+            Materialize.toast('WIN!', 150000, 'rounded, green');
 
             $('#bet-btn').removeClass('disabled');
             $('#bet-btn').addClass('pulse');

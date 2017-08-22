@@ -26,11 +26,12 @@ contract Mortal is Owned {
 
 contract Slotthereum is Mortal {
 
-    mapping (address => Game[]) private games;        // games per address
-    uint private minBetAmount = 10000000000000000;    // minimum amount per bet
+    mapping (address => Game[]) private games;      // games per address
+
+    uint private minBetAmount = 10000000000000000;  // minimum amount per bet
     uint private maxBetAmount = 5000000000000000000;  // maximum amount per bet
-    uint private pointer = 1;                         // block pointer
-    uint private numberOfPlayers = 0;                 // number of players
+    uint private pointer = 1;                       // block pointer
+    uint private numberOfPlayers = 0;               // number of players
 
     struct Game {
         uint id;
@@ -43,16 +44,7 @@ contract Slotthereum is Mortal {
         uint prize;
     }
 
-    event BetPlaced(
-        address indexed player,
-        uint indexed gameId,
-        uint amount,
-        uint8 start,
-        uint8 end
-    );
-
     event MinBetAmountChanged(uint amount);
-
     event MaxBetAmountChanged(uint amount);
 
     event GameWin(
@@ -77,9 +69,25 @@ contract Slotthereum is Mortal {
 
     function notify(address player, uint gameId, uint8 start, uint8 end, uint8 number, uint amount, uint prize, bool win) internal {
         if (win) {
-            GameWin(player, gameId, start, end, number, amount, prize);
+            GameWin(
+                player,
+                gameId,
+                start,
+                end,
+                number,
+                amount,
+                prize
+            );
         } else {
-            GameLoose(player, gameId, start, end, number, amount, prize);
+            GameLoose(
+                player,
+                gameId,
+                start,
+                end,
+                number,
+                amount,
+                prize
+            );
         }
     }
 
@@ -94,8 +102,8 @@ contract Slotthereum is Mortal {
     }
 
     function getNumber(bytes32 _a) internal constant returns (uint8) {
-        uint8 mint = 0;
-        for (uint i = _a.length - 1; i >= 0; i--) {
+        uint8 mint = 0; // pointer?
+        for (uint i = 31; i >= 1; i--) {
             if ((uint8(_a[i]) >= 48) && (uint8(_a[i]) <= 57)) {
                 return uint8(_a[i]) - 48;
             }
@@ -130,6 +138,7 @@ contract Slotthereum is Mortal {
         games[msg.sender][gameId].end = end;
         games[msg.sender][gameId].hash = getBlockHash(pointer);
         games[msg.sender][gameId].number = getNumber(games[msg.sender][gameId].hash);
+        // set pointer to number ?
 
         games[msg.sender][gameId].prize = 1;
         if ((games[msg.sender][gameId].number >= start) && (games[msg.sender][gameId].number <= end)) {
@@ -138,6 +147,8 @@ contract Slotthereum is Mortal {
             uint parts = 10 - counter;
             games[msg.sender][gameId].prize = msg.value + dec * parts;
         }
+
+        msg.sender.transfer(games[msg.sender][gameId].prize);
 
         notify(
             msg.sender,
@@ -149,8 +160,6 @@ contract Slotthereum is Mortal {
             games[msg.sender][gameId].prize,
             games[msg.sender][gameId].win
         );
-
-        msg.sender.transfer(games[msg.sender][gameId].prize);
 
         return true;
     }
