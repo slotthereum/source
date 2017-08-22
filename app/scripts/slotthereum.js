@@ -1,5 +1,5 @@
 function Slotthereum() {
-    this.contract = web3.eth.contract([{"constant":true,"inputs":[{"name":"player","type":"address"},{"name":"gameId","type":"uint256"}],"name":"getGameNumber","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_a","type":"bytes32"}],"name":"getNumber","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"player","type":"address"},{"name":"gameId","type":"uint256"}],"name":"getGameStart","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"player","type":"address"},{"name":"gameId","type":"uint256"}],"name":"getGameHash","outputs":[{"name":"","type":"bytes32"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getMaxBetAmount","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_minBetAmount","type":"uint256"}],"name":"setMinBetAmount","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_maxBetAmount","type":"uint256"}],"name":"setMaxBetAmount","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getMinBetAmount","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"player","type":"address"},{"name":"gameId","type":"uint256"}],"name":"getGameWin","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"start","type":"uint8"},{"name":"end","type":"uint8"}],"name":"placeBet","outputs":[{"name":"","type":"bool"}],"payable":true,"type":"function"},{"constant":true,"inputs":[{"name":"player","type":"address"},{"name":"gameId","type":"uint256"}],"name":"getGameEnd","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"player","type":"address"},{"name":"gameId","type":"uint256"}],"name":"getGamePrize","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"player","type":"address"}],"name":"getGameIds","outputs":[{"name":"ids","type":"uint256[]"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"player","type":"address"},{"name":"gameId","type":"uint256"}],"name":"getGameAmount","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"i","type":"uint256"}],"name":"getBlockHash","outputs":[{"name":"blockHash","type":"bytes32"}],"payable":false,"type":"function"},{"payable":true,"type":"fallback"},{"anonymous":false,"inputs":[{"indexed":true,"name":"player","type":"address"},{"indexed":true,"name":"gameId","type":"uint256"},{"indexed":false,"name":"amount","type":"uint256"},{"indexed":false,"name":"start","type":"uint8"},{"indexed":false,"name":"end","type":"uint8"}],"name":"BetPlaced","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"amount","type":"uint256"}],"name":"MinBetAmountChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"amount","type":"uint256"}],"name":"MaxBetAmountChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"player","type":"address"},{"indexed":true,"name":"gameId","type":"uint256"},{"indexed":false,"name":"start","type":"uint8"},{"indexed":false,"name":"end","type":"uint8"},{"indexed":false,"name":"number","type":"uint8"},{"indexed":false,"name":"amount","type":"uint256"},{"indexed":false,"name":"prize","type":"uint256"}],"name":"GameWin","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"player","type":"address"},{"indexed":true,"name":"gameId","type":"uint256"},{"indexed":false,"name":"start","type":"uint8"},{"indexed":false,"name":"end","type":"uint8"},{"indexed":false,"name":"number","type":"uint8"},{"indexed":false,"name":"amount","type":"uint256"},{"indexed":false,"name":"prize","type":"uint256"}],"name":"GameLoose","type":"event"}]);
+    this.contract = web3.eth.contract([{'constant':true,'inputs':[{'name':'player','type':'address'},{'name':'gameId','type':'uint256'}],'name':'getGameNumber','outputs':[{'name':'','type':'uint8'}],'payable':false,'type':'function'},{'constant':true,'inputs':[{'name':'_a','type':'bytes32'}],'name':'getNumber','outputs':[{'name':'','type':'uint8'}],'payable':false,'type':'function'},{'constant':false,'inputs':[],'name':'kill','outputs':[],'payable':false,'type':'function'},{'constant':true,'inputs':[{'name':'player','type':'address'},{'name':'gameId','type':'uint256'}],'name':'getGameStart','outputs':[{'name':'','type':'uint8'}],'payable':false,'type':'function'},{'constant':true,'inputs':[{'name':'player','type':'address'},{'name':'gameId','type':'uint256'}],'name':'getGameHash','outputs':[{'name':'','type':'bytes32'}],'payable':false,'type':'function'},{'constant':true,'inputs':[],'name':'getMaxBetAmount','outputs':[{'name':'','type':'uint256'}],'payable':false,'type':'function'},{'constant':false,'inputs':[{'name':'_minBetAmount','type':'uint256'}],'name':'setMinBetAmount','outputs':[{'name':'','type':'uint256'}],'payable':false,'type':'function'},{'constant':false,'inputs':[{'name':'_maxBetAmount','type':'uint256'}],'name':'setMaxBetAmount','outputs':[{'name':'','type':'uint256'}],'payable':false,'type':'function'},{'constant':true,'inputs':[],'name':'getMinBetAmount','outputs':[{'name':'','type':'uint256'}],'payable':false,'type':'function'},{'constant':true,'inputs':[{'name':'player','type':'address'},{'name':'gameId','type':'uint256'}],'name':'getGameWin','outputs':[{'name':'','type':'bool'}],'payable':false,'type':'function'},{'constant':false,'inputs':[{'name':'start','type':'uint8'},{'name':'end','type':'uint8'}],'name':'placeBet','outputs':[{'name':'','type':'bool'}],'payable':true,'type':'function'},{'constant':true,'inputs':[{'name':'player','type':'address'},{'name':'gameId','type':'uint256'}],'name':'getGameEnd','outputs':[{'name':'','type':'uint8'}],'payable':false,'type':'function'},{'constant':true,'inputs':[{'name':'player','type':'address'},{'name':'gameId','type':'uint256'}],'name':'getGamePrize','outputs':[{'name':'','type':'uint256'}],'payable':false,'type':'function'},{'constant':true,'inputs':[{'name':'player','type':'address'}],'name':'getGameIds','outputs':[{'name':'ids','type':'uint256[]'}],'payable':false,'type':'function'},{'constant':true,'inputs':[{'name':'player','type':'address'},{'name':'gameId','type':'uint256'}],'name':'getGameAmount','outputs':[{'name':'','type':'uint256'}],'payable':false,'type':'function'},{'constant':true,'inputs':[{'name':'i','type':'uint256'}],'name':'getBlockHash','outputs':[{'name':'blockHash','type':'bytes32'}],'payable':false,'type':'function'},{'payable':true,'type':'fallback'},{'anonymous':false,'inputs':[{'indexed':true,'name':'player','type':'address'},{'indexed':true,'name':'gameId','type':'uint256'},{'indexed':false,'name':'amount','type':'uint256'},{'indexed':false,'name':'start','type':'uint8'},{'indexed':false,'name':'end','type':'uint8'}],'name':'BetPlaced','type':'event'},{'anonymous':false,'inputs':[{'indexed':false,'name':'amount','type':'uint256'}],'name':'MinBetAmountChanged','type':'event'},{'anonymous':false,'inputs':[{'indexed':false,'name':'amount','type':'uint256'}],'name':'MaxBetAmountChanged','type':'event'},{'anonymous':false,'inputs':[{'indexed':true,'name':'player','type':'address'},{'indexed':true,'name':'gameId','type':'uint256'},{'indexed':false,'name':'start','type':'uint8'},{'indexed':false,'name':'end','type':'uint8'},{'indexed':false,'name':'number','type':'uint8'},{'indexed':false,'name':'amount','type':'uint256'},{'indexed':false,'name':'prize','type':'uint256'}],'name':'GameWin','type':'event'},{'anonymous':false,'inputs':[{'indexed':true,'name':'player','type':'address'},{'indexed':true,'name':'gameId','type':'uint256'},{'indexed':false,'name':'start','type':'uint8'},{'indexed':false,'name':'end','type':'uint8'},{'indexed':false,'name':'number','type':'uint8'},{'indexed':false,'name':'amount','type':'uint256'},{'indexed':false,'name':'prize','type':'uint256'}],'name':'GameLoose','type':'event'}]);
 
     this.stopped = false;
     this.stopping = -1;
@@ -97,6 +97,12 @@ function Slotthereum() {
                     done(error, self.maxBetAmount);
                 });
             },
+            function games(maxBetAmount, done) {
+                Materialize.fadeInImage('#play-now-btn');
+                Materialize.fadeInImage('#play-now-btn2');
+                Materialize.fadeInImage('#bet-btn');
+                done(null, null);
+            }
             // function games(maxBetAmount, done) {
             //     self.contractInstance.getPlayers(function(error, result) {
             //         console.log('getPlayers: ' + result.valueOf())
@@ -155,7 +161,7 @@ function Slotthereum() {
     this.placeBet = function (amount, a, b) {
         var value = amount * 1000000000000000000
         // var gas = 100000000;
-        var gas = 900000;
+        var gas = 300000;
         console.log('sending from: ' + self.account)
 
         self.contractInstance.placeBet(a, b, {from: self.account, value: value, gas: gas}, function(error, result) {
@@ -165,6 +171,7 @@ function Slotthereum() {
             } else {
                 self.start();
                 $('#bet-btn').addClass('disabled');
+                $('#bet-btn').removeClass('pulse');
 
                 $('#amount').attr('disabled', true);
 
@@ -234,6 +241,8 @@ function Slotthereum() {
                 self.changeAccount(newValue)
             });
 
+            self.renderAllIdenticons();
+
             self.init();
         });
     }
@@ -277,7 +286,7 @@ function Slotthereum() {
         if (error) {
             console.log('ERROR:');
             console.log(error);
-        } else {
+        } else if (self.account == event.args.player) {
             console.log('betPlaced event player: ' + event.args.player);
             console.log('event.args.gameId: ' + event.args.gameId);
             console.log('event.args.amount: ' + event.args.amount);
@@ -285,6 +294,7 @@ function Slotthereum() {
             console.log('event.args.end: ' + event.args.end);
 
             $('#bet-btn').removeClass('disabled');
+            $('#bet-btn').addClass('pulse');
             $('#confirmations').css('opacity', 0);
             Materialize.toast('New bet placed', 5000, 'rounded');
         }
@@ -294,7 +304,7 @@ function Slotthereum() {
         if (error) {
             console.log('ERROR:');
             console.log(error);
-        } else {
+        } else if (self.account == event.args.player) {
             console.log('gameWinEvent');
             console.log('event.args.player: ' + event.args.player);
             console.log('event.args.gameId: ' + event.args.gameId);
@@ -303,10 +313,11 @@ function Slotthereum() {
             console.log('event.args.end: ' + event.args.end);
             console.log('event.args.number: ' + event.args.number);
             console.log('event.args.prize: ' + event.args.prize);
-            self.stop(0);
-            Materialize.toast('Player ' + event.args.player + ' wins!', 5000, 'rounded');
+            self.stop(event.args.number);
+            Materialize.toast('WIN!', 150000, 'rounded, red');
 
             $('#bet-btn').removeClass('disabled');
+            $('#bet-btn').addClass('pulse');
             $('#amount').attr('disabled', false);
 
             var slider_bet = document.getElementById('bet_range');
@@ -320,7 +331,7 @@ function Slotthereum() {
         if (error) {
             console.log('ERROR:');
             console.log(error);
-        } else {
+        } else if (self.account == event.args.player) {
             console.log('gameLooseEvent');
             console.log('event.args.player: ' + event.args.player);
             console.log('event.args.gameId: ' + event.args.gameId);
@@ -330,6 +341,7 @@ function Slotthereum() {
             console.log('event.args.number: ' + event.args.number);
             console.log('event.args.prize: ' + event.args.prize);
             self.stop(event.args.number);
+            Materialize.toast('LOOSE!', 150000, 'rounded, red');
 
             $('#bet-btn').removeClass('disabled');
             $('#amount').attr('disabled', false);
@@ -403,13 +415,13 @@ function Slotthereum() {
                 window.scrollTo(0, 0);
             });
 
-            $('#play-now-btn').click(function() {
-                $('ul.tabs').tabs('select_tab', 'play-now');
+            $('#play-now-btn, #play-now-btn2').click(function() {
                 window.scrollTo(0, 0);
+                $('ul.tabs').tabs('select_tab', 'play-now');
             });
 
             $(window).scroll(function() {
-                var opacity = 1 - $(window).scrollTop() / 70;
+                var opacity = 1 - $(window).scrollTop() / 30;
                 if (opacity < 0) {
                     opacity = 0;
                 }
@@ -422,9 +434,9 @@ function Slotthereum() {
 
             $('.main-container').css('display', 'block');
 
-            $("input[type=range]").change(function() {
-              console.log($("input[type=range]").val());
-              $('#bet-number').html($("input[type=range]").val());
+            $('input[type=range]').change(function() {
+              console.log($('input[type=range]').val());
+              $('#bet-number').html($('input[type=range]').val());
             });
 
             $(document).ready(function(){
@@ -462,7 +474,7 @@ function Slotthereum() {
                     self.update_profit();
                 });
 
-                $("#amount").change(function() {
+                $('#amount').change(function() {
                     if ($(this).val().length > 7) { 
                         $(this).val(Number($(this).val()).toFixed(6));
                     }
@@ -472,7 +484,7 @@ function Slotthereum() {
                 $('#bet-btn').click(function() {
                     var a = parseInt(slider_bet.noUiSlider.get()[0]);
                     var b = parseInt(slider_bet.noUiSlider.get()[1]);
-                    var amount = $("#amount").val();
+                    var amount = $('#amount').val();
                     self.placeBet(amount, a, b);
                 });
             });

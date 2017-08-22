@@ -115,13 +115,70 @@
 
     <div id="play-now" class="col s12">
 
+      <!--
+      <div class="row">
+        <div class="col s6">
+          <ul class="collection with-header left-align">
+            <li class="collection-header"><h5><i class="material-icons">wb_sunny</i> Wins</h5></li>
+          </ul>
+          <label id="amount_eth">ETH</label>
+          <input id="wins" type="number" class="disabled" value="0" disabled="true">
+        </div>
+
+        <div class="col s6">
+          <ul class="collection with-header left-align">
+            <li class="collection-header"><h5> <i class="material-icons">wb_cloudy</i> Losses</h5></li>
+          </ul>
+          <label id="amount_eth">ETH</label>
+          <input id="losses" type="number" class="disabled" value="0" disabled="true">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s3">
+          <ul class="collection with-header left-align">
+            <li class="collection-header"><h5><i class="material-icons">vertical_align_bottom</i> Min bet</h5></li>
+          </ul>
+          <label id="amount_eth">ETH</label>
+          <input id="min_amount" type="number" class="disabled" value="0" disabled="true">
+        </div>
+
+        <div class="col s3">
+          <ul class="collection with-header left-align">
+            <li class="collection-header"><h5> <i class="material-icons">vertical_align_top</i> Max bet</h5></li>
+          </ul>
+          <label id="amount_eth">ETH</label>
+          <input id="max_amount" type="number" class="disabled" value="0" disabled="true">
+        </div>
+
+        <div class="col s3">
+          <ul class="collection with-header left-align">
+            <li class="collection-header"><h5><i class="material-icons">vertical_align_bottom</i> Min profit</h5></li>
+          </ul>
+          <label id="amount_eth">ETH</label>
+          <input id="min_profit" type="number" class="disabled" value="0" disabled="true">
+        </div>
+
+        <div class="col s3">
+          <ul class="collection with-header left-align">
+            <li class="collection-header"><h5><i class="material-icons">vertical_align_top</i> Max profit</h5></li>
+          </ul>
+          <label id="amount_eth">ETH</label>
+          <input id="max_profit" type="number" class="disabled" value="0" disabled="true">
+        </div>
+      </div>
+      -->
+
       <div class="row">
         <div class="col s12 m12">
           <div class="card green lighten-2 z-depth-1 round">
             <div class="card-content white-text bet-content center-align">
+              
+              <!--
               <ul class="collection with-header left-align" style="display: none;">
                 <li class="collection-header"><h4><i class="material-icons">play_for_work</i> Place your bet</h5></li>
               </ul>
+              -->
 
               <div class="row">
                 <div class="col s6">
@@ -156,7 +213,6 @@
                     <div id="bet-number-7" class="btn-floating valign-wrapper center-align blue waves-effect bet-number-btn">7</div>
                     <div id="bet-number-8" class="btn-floating valign-wrapper center-align blue waves-effect bet-number-btn">8</div>
                     <div id="bet-number-9" class="btn-floating valign-wrapper center-align blue waves-effect bet-number-btn">9</div>
-                    <a id="bet-btn" class="waves-effect waves btn blue right-align"><i id="selected-number" class="left"></i> Place bet</a>
                   </div>
                 </li>
               </ul>
@@ -168,6 +224,8 @@
                       <li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li>
                   </ul>
               </div>
+
+              <a id="bet-btn" class="waves-effect waves btn blue right-align pulse"><i id="selected-number" class="left"></i> Place bet</a>
 
               <!-- <div class="row" id="confirmations">
                 <div class="col s12">
@@ -193,6 +251,11 @@
     </div>
 
     <div id="intro" class="col s12">
+      <div class="row">
+        <div class="col s12 m12 center-align">
+          <a id="play-now-btn2" class="waves-effect waves btn orange lighten-2 pulse"><i class="material-icons left">play_arrow</i> PLAY NOW</a>
+        </div>
+      </div>
       <div class="row">
         <div class="col s12 m12">
           <div class="card green lighten-2 z-depth-1 round">
@@ -237,7 +300,7 @@
       </div>
       <div class="row">
         <div class="col s12 m12 center-align">
-          <a id="play-now-btn" href="#play-now" class="waves-effect waves btn orange lighten-2 pulse"><i class="material-icons left">play_arrow</i> PLAY NOW</a>
+          <a id="play-now-btn" class="waves-effect waves btn orange lighten-2 pulse"><i class="material-icons left">play_arrow</i> PLAY NOW</a>
         </div>
       </div>
     </div>
@@ -286,7 +349,7 @@
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    ga('create', 'UA-103132887-1', 'auto');
+    ga('create', 'UA-105027399-1', 'auto');
     ga('send', 'pageview');
   </script>
 
@@ -340,14 +403,14 @@
             switch (netId) {
                 case '1':
                     console.log('This is mainnet')
-                    window.contract_address = '0x5a2a454675c1b659caa58b5675ee759b992b84b1'  // 1th mainnet
+                    window.contract_address = '0xb5a139d41f3ac747f21e9078dfc33b9055b4eb70'  // 1th mainnet
                     break
                 case '2':
                     console.log('This is the deprecated Morden test network.')
                     break
                 case '3':
                     console.log('This is the ropsten test network.')
-                    window.contract_address = '0xdffe64e43f75c35bfdf361a4fc063b9a88e15449'  // 1st ropsten
+                    window.contract_address = '0x3199a17d2ece0581049c71ba0d323bd23b99887e'  // 1st ropsten
                     break
                 default:
                     console.log('This is an unknown network.')
