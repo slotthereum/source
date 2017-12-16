@@ -1,6 +1,7 @@
 function Slotthereum() {
-    this.contract = web3.eth.contract([{'constant':true,'inputs':[{'name':'player','type':'address'},{'name':'gameId','type':'uint256'}],'name':'getGameNumber','outputs':[{'name':'','type':'uint8'}],'payable':false,'type':'function'},{'constant':true,'inputs':[{'name':'_a','type':'bytes32'}],'name':'getNumber','outputs':[{'name':'','type':'uint8'}],'payable':false,'type':'function'},{'constant':false,'inputs':[],'name':'kill','outputs':[],'payable':false,'type':'function'},{'constant':true,'inputs':[{'name':'player','type':'address'},{'name':'gameId','type':'uint256'}],'name':'getGameStart','outputs':[{'name':'','type':'uint8'}],'payable':false,'type':'function'},{'constant':true,'inputs':[{'name':'player','type':'address'},{'name':'gameId','type':'uint256'}],'name':'getGameHash','outputs':[{'name':'','type':'bytes32'}],'payable':false,'type':'function'},{'constant':true,'inputs':[],'name':'getMaxBetAmount','outputs':[{'name':'','type':'uint256'}],'payable':false,'type':'function'},{'constant':false,'inputs':[{'name':'_minBetAmount','type':'uint256'}],'name':'setMinBetAmount','outputs':[{'name':'','type':'uint256'}],'payable':false,'type':'function'},{'constant':false,'inputs':[{'name':'_maxBetAmount','type':'uint256'}],'name':'setMaxBetAmount','outputs':[{'name':'','type':'uint256'}],'payable':false,'type':'function'},{'constant':true,'inputs':[],'name':'getMinBetAmount','outputs':[{'name':'','type':'uint256'}],'payable':false,'type':'function'},{'constant':true,'inputs':[{'name':'player','type':'address'},{'name':'gameId','type':'uint256'}],'name':'getGameWin','outputs':[{'name':'','type':'bool'}],'payable':false,'type':'function'},{'constant':false,'inputs':[{'name':'start','type':'uint8'},{'name':'end','type':'uint8'}],'name':'placeBet','outputs':[{'name':'','type':'bool'}],'payable':true,'type':'function'},{'constant':true,'inputs':[{'name':'player','type':'address'},{'name':'gameId','type':'uint256'}],'name':'getGameEnd','outputs':[{'name':'','type':'uint8'}],'payable':false,'type':'function'},{'constant':true,'inputs':[{'name':'player','type':'address'},{'name':'gameId','type':'uint256'}],'name':'getGamePrize','outputs':[{'name':'','type':'uint256'}],'payable':false,'type':'function'},{'constant':true,'inputs':[{'name':'player','type':'address'}],'name':'getGameIds','outputs':[{'name':'ids','type':'uint256[]'}],'payable':false,'type':'function'},{'constant':true,'inputs':[{'name':'player','type':'address'},{'name':'gameId','type':'uint256'}],'name':'getGameAmount','outputs':[{'name':'','type':'uint256'}],'payable':false,'type':'function'},{'constant':true,'inputs':[{'name':'i','type':'uint256'}],'name':'getBlockHash','outputs':[{'name':'blockHash','type':'bytes32'}],'payable':false,'type':'function'},{'payable':true,'type':'fallback'},{'anonymous':false,'inputs':[{'indexed':true,'name':'player','type':'address'},{'indexed':true,'name':'gameId','type':'uint256'},{'indexed':false,'name':'amount','type':'uint256'},{'indexed':false,'name':'start','type':'uint8'},{'indexed':false,'name':'end','type':'uint8'}],'name':'BetPlaced','type':'event'},{'anonymous':false,'inputs':[{'indexed':false,'name':'amount','type':'uint256'}],'name':'MinBetAmountChanged','type':'event'},{'anonymous':false,'inputs':[{'indexed':false,'name':'amount','type':'uint256'}],'name':'MaxBetAmountChanged','type':'event'},{'anonymous':false,'inputs':[{'indexed':true,'name':'player','type':'address'},{'indexed':true,'name':'gameId','type':'uint256'},{'indexed':false,'name':'start','type':'uint8'},{'indexed':false,'name':'end','type':'uint8'},{'indexed':false,'name':'number','type':'uint8'},{'indexed':false,'name':'amount','type':'uint256'},{'indexed':false,'name':'prize','type':'uint256'}],'name':'GameWin','type':'event'},{'anonymous':false,'inputs':[{'indexed':true,'name':'player','type':'address'},{'indexed':true,'name':'gameId','type':'uint256'},{'indexed':false,'name':'start','type':'uint8'},{'indexed':false,'name':'end','type':'uint8'},{'indexed':false,'name':'number','type':'uint8'},{'indexed':false,'name':'amount','type':'uint256'},{'indexed':false,'name':'prize','type':'uint256'}],'name':'GameLoose','type':'event'}]);
+    this.contract = web3.eth.contract([{'constant':true,'inputs':[{'name':'','type':'uint256'}],'name':'games','outputs':[{'name':'player','type':'address'},{'name':'id','type':'uint256'},{'name':'amount','type':'uint256'},{'name':'start','type':'uint8'},{'name':'end','type':'uint8'},{'name':'hash','type':'bytes32'},{'name':'number','type':'uint8'},{'name':'win','type':'bool'},{'name':'prize','type':'uint256'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':true,'inputs':[{'name':'gameId','type':'uint256'}],'name':'getGameEnd','outputs':[{'name':'','type':'uint8'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':true,'inputs':[{'name':'gameId','type':'uint256'}],'name':'getGamePlayer','outputs':[{'name':'','type':'address'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':true,'inputs':[{'name':'gameId','type':'uint256'}],'name':'getGameWin','outputs':[{'name':'','type':'bool'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':false,'inputs':[{'name':'amount','type':'uint256'}],'name':'withdraw','outputs':[{'name':'','type':'uint256'}],'payable':false,'stateMutability':'nonpayable','type':'function'},{'constant':false,'inputs':[],'name':'kill','outputs':[],'payable':false,'stateMutability':'nonpayable','type':'function'},{'constant':false,'inputs':[{'name':'_pointer','type':'uint8'}],'name':'setPointer','outputs':[{'name':'','type':'uint256'}],'payable':false,'stateMutability':'nonpayable','type':'function'},{'constant':true,'inputs':[],'name':'getMaxBetAmount','outputs':[{'name':'','type':'uint256'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':false,'inputs':[{'name':'_minBetAmount','type':'uint256'}],'name':'setMinBetAmount','outputs':[{'name':'','type':'uint256'}],'payable':false,'stateMutability':'nonpayable','type':'function'},{'constant':false,'inputs':[{'name':'_maxBetAmount','type':'uint256'}],'name':'setMaxBetAmount','outputs':[{'name':'','type':'uint256'}],'payable':false,'stateMutability':'nonpayable','type':'function'},{'constant':true,'inputs':[],'name':'getMinBetAmount','outputs':[{'name':'','type':'uint256'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':true,'inputs':[{'name':'gameId','type':'uint256'}],'name':'getGameNumber','outputs':[{'name':'','type':'uint8'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':true,'inputs':[],'name':'getGameIds','outputs':[{'name':'','type':'uint256[]'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':false,'inputs':[{'name':'start','type':'uint8'},{'name':'end','type':'uint8'}],'name':'placeBet','outputs':[{'name':'','type':'bool'}],'payable':true,'stateMutability':'payable','type':'function'},{'constant':true,'inputs':[{'name':'gameId','type':'uint256'}],'name':'getGameAmount','outputs':[{'name':'','type':'uint256'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':true,'inputs':[{'name':'gameId','type':'uint256'}],'name':'getGameStart','outputs':[{'name':'','type':'uint8'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':true,'inputs':[{'name':'gameId','type':'uint256'}],'name':'getGameHash','outputs':[{'name':'','type':'bytes32'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':true,'inputs':[{'name':'gameId','type':'uint256'}],'name':'getGamePrize','outputs':[{'name':'','type':'uint256'}],'payable':false,'stateMutability':'view','type':'function'},{'constant':true,'inputs':[],'name':'numberOfGames','outputs':[{'name':'','type':'uint256'}],'payable':false,'stateMutability':'view','type':'function'},{'payable':true,'stateMutability':'payable','type':'fallback'},{'anonymous':false,'inputs':[{'indexed':false,'name':'amount','type':'uint256'}],'name':'MinBetAmountChanged','type':'event'},{'anonymous':false,'inputs':[{'indexed':false,'name':'amount','type':'uint256'}],'name':'MaxBetAmountChanged','type':'event'},{'anonymous':false,'inputs':[{'indexed':false,'name':'value','type':'uint8'}],'name':'PointerChanged','type':'event'},{'anonymous':false,'inputs':[{'indexed':true,'name':'player','type':'address'},{'indexed':true,'name':'gameId','type':'uint256'},{'indexed':false,'name':'start','type':'uint8'},{'indexed':false,'name':'end','type':'uint8'},{'indexed':false,'name':'amount','type':'uint256'}],'name':'GameRoll','type':'event'},{'anonymous':false,'inputs':[{'indexed':true,'name':'player','type':'address'},{'indexed':true,'name':'gameId','type':'uint256'},{'indexed':false,'name':'start','type':'uint8'},{'indexed':false,'name':'end','type':'uint8'},{'indexed':false,'name':'number','type':'uint8'},{'indexed':false,'name':'amount','type':'uint256'},{'indexed':false,'name':'prize','type':'uint256'}],'name':'GameWin','type':'event'},{'anonymous':false,'inputs':[{'indexed':true,'name':'player','type':'address'},{'indexed':true,'name':'gameId','type':'uint256'},{'indexed':false,'name':'start','type':'uint8'},{'indexed':false,'name':'end','type':'uint8'},{'indexed':false,'name':'number','type':'uint8'},{'indexed':false,'name':'amount','type':'uint256'},{'indexed':false,'name':'prize','type':'uint256'}],'name':'GameLoose','type':'event'}]);
 
+    this.rendering = false;
     this.stopped = false;
     this.stopping = -1;
 
@@ -14,6 +15,9 @@ function Slotthereum() {
     this.players = [];
     this.minBetAmount = -1;
     this.maxBetAmount = -1;
+    this.numberOfGames = -1;
+    this.winCount = 0;
+    this.looseCount = 0;
     this.machine;
     var self = this;
 
@@ -52,7 +56,8 @@ function Slotthereum() {
     }
 
     this.formatN = function (n) {
-        return n.replace('.', ',');
+        return String(Number(n).toFixed(6)).replace('.', ',');
+        // return String(Number(n).toFixed(6)).replace('.', ',');
     }
 
     this.update_profit = function () {
@@ -61,7 +66,7 @@ function Slotthereum() {
         var b = parseInt(slider_bet.noUiSlider.get()[1]);
         var number_count = (b - a) + 1;
         var amount = $('#amount').val();
-        var profit = (amount * (1 - number_count/10)).toFixed(6);
+        var profit = amount * (1 - (number_count/10));
 
         $('#bet_amount').html(self.formatN(amount));
         $('#bet_profit').html(self.formatN(profit));
@@ -86,7 +91,7 @@ function Slotthereum() {
                 self.contractInstance.getMinBetAmount(function(error, result) {
                     console.log('getMinBetAmount: ' + result.valueOf())
                     self.minBetAmount = result.valueOf();
-                    $('#bet-amount').val(web3.fromWei(self.minBetAmount, 'ether'))
+                    $('#min_amount').val(web3.fromWei(self.minBetAmount, 'ether'))
                     done(error, self.minBetAmount);
                 });
             },
@@ -94,56 +99,54 @@ function Slotthereum() {
                 self.contractInstance.getMaxBetAmount(function(error, result) {
                     console.log('getMaxBetAmount: ' + result.valueOf())
                     self.maxBetAmount = result.valueOf();
+                    $('#max_amount').val(web3.fromWei(self.maxBetAmount, 'ether'));
+
+                    self.maxProfit = (parseInt(self.maxBetAmount) * (1 - (1/10)));
+                    self.minProfit = (parseInt(minBetAmount) * (1 - (7/10)));
+
+                    // $('#min_profit').val(web3.fromWei(self.minProfit, 'ether'));
+                    $('#min_profit').val(web3.fromWei(self.minProfit, 'ether'));
+                    $('#max_profit').val(web3.fromWei(self.maxProfit, 'ether'));
+
                     done(error, self.maxBetAmount);
                 });
             },
-            function games(maxBetAmount, done) {
+            function NumberOfgames(maxBetAmount, done) {
+                self.contractInstance.numberOfGames(function(error, result) {
+                    console.log('getNumberOfGames: ' + result.valueOf())
+                    self.numberOfGames = result.valueOf();
+                    done(error, self.numberOfGames);
+                });
+            },
+            function games(numberOfGames, done) {
+                self.winCount = 0;
+                self.looseCount = 0;
+                self.games = [];
+                self.contractInstance.getGameIds(function(error, result) {
+                    var _games = result.valueOf();
+                    for (var j = 0; j < _games.length; j++) {
+                        var game = new Game(self, _games[j]);
+                        self.games.push(game);
+                    }
+                });
                 Materialize.fadeInImage('#play-now-btn');
                 Materialize.fadeInImage('#play-now-btn2');
                 Materialize.fadeInImage('#bet-btn');
                 done(null, null);
             }
-            // function games(maxBetAmount, done) {
-            //     self.contractInstance.getPlayers(function(error, result) {
-            //         console.log('getPlayers: ' + result.valueOf())
-            //         var players = result.valueOf();
-            //         for (var i = 0; i < players.length; i++) {
-            //             var player = players[i];
-            //             console.log('player: ' + player)
-            //             if (!self.players.includes(player)) {
-            //                 self.players.push(player);
-            //                 // self.addGamePlaceHolder(games[i]);
-            //             }
-
-            //             self.contractInstance.getGameIds(player, function(error, result) {
-            //                 console.log('getGameIds: ' + result.valueOf())
-            //                 var games = result.valueOf();
-            //                 for (var i = 0; i < games.length; i++) {
-            //                     console.log('player: ' + player)
-            //                     var game = new Game(self, player, games[i]);
-            //                     self.games.push(game);
-            //                     // self.addGamePlaceHolder(games[i]);
-            //                     if (player == self.account) {
-            //                         self.myGames.push(game);
-            //                     }
-            //                 }
-            //             });
-            //         }
-            //         done(error, self.players);
-            //     });
-            // },
         ],
         function (err) {
             if (err) {
                 console.error(err);
             }
+            self.renderResults();
         });
     };
 
     this.areAllGamesInitialized = function () {
         var ret = true;
-        for (var i = 0; i <= self.games; i++) {
-            if (self.games.initialized == false) {
+        for (var i = 0; i < self.numberOfGames; i++) {
+            if (self.games[i].initialized == false) {
                 return false;
             }
         }
@@ -158,13 +161,48 @@ function Slotthereum() {
     //
     //  PLACE BET
     //
+    this.callWhenMinedSetTimeout = function (hash) {
+        setTimeout(function () { self.callWhenMined(hash) }, 1000);
+    }
+
+    this.callWhenMined = function (hash) {
+        web3.eth.getTransactionReceipt(hash, function (error, result) {
+            console.log('getTransactionReceipt> ' + hash);
+            if (error) {
+                console.log(error)
+            } else {
+                if (result == null) {
+                    self.callWhenMinedSetTimeout(hash);
+                } else {
+                    if (result.blockNumber == null) {
+                        self.callWhenMinedSetTimeout(hash);
+                    } else {
+                        console.log('DONE!');
+                        console.log('tx mined: ' + hash);
+                        console.log(result);
+
+                        // result.logs[0].data = '0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000038d7ea4c68000';
+
+                        // result.logs[0].data = ''"0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000038d7ea4c680000000000000000000000000000000000000000000000000000003e871b540c000"';
+
+                        // self.contractInstance.getGameNumber(self2.callWhenMinedGameId, function(error, result) {
+                        //     console.log('NUMBER: ' + result.valueOf());
+                        //     self.stop(result.valueOf());
+                        //     self.init();
+                        // });
+                    }
+                }
+            }
+        });
+    }
+
     this.placeBet = function (amount, a, b) {
         var value = amount * 1000000000000000000
-        // var gas = 100000000;
-        var gas = 200000;
+        var gas = 300000;
+        // var gasPrice = 4000000000;
         console.log('sending from: ' + self.account)
 
-        self.contractInstance.placeBet(a, b, {from: self.account, value: value, gas: gas}, function(error, result) {
+        self.contractInstance.placeBet(a, b, {from: self.account, value: value, gas: gas/*, gasPrice: gasPrice*/}, function(error, result) {
             if (error) {
                 console.log('ERROR:');
                 console.log(error);
@@ -180,31 +218,17 @@ function Slotthereum() {
                 origins[0].setAttribute('disabled', true);
                 origins[1].setAttribute('disabled', true);
 
-                // Materialize.fadeInImage('#confirmations');
+                $('#tx').html(result);
+                $('#tx').attr('href', 'https://etherscan.io/tx/' + result);
+                Materialize.fadeInImage('#confirmations');
+                // self.callWhenMined(result);
+
                 console.log(result);
             }
         });
     }
     //
     //  PLACE BET
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    //  WITHDRAW
-    //
-    this.withdraw = function () {
-        var gas = 500000;
-        console.log('withdraw from: ' + self.account)
-        self.contractInstance.withdraw({from: self.account, gas: gas}, function(error, result) {
-            $('#withdraw-btn').addClass('disabled');
-            $('#withdraw-transaction-id').html(result)
-            Materialize.fadeInImage('#withdraw-confirmations');
-        });
-    }
-    //
-    //  WITHDRAW
     //
     ///////////////////////////////////////////////////////////////////////////
 
@@ -300,30 +324,28 @@ function Slotthereum() {
     //     }
     // }
 
+    this.rollEnded = function (number) {
+        self.stop(number);
+        $('#bet-btn').removeClass('disabled');
+        $('#bet-btn').addClass('pulse');
+        $('#amount').attr('disabled', false);
+        $('#confirmations').css('opacity', 0);
+
+        var slider_bet = document.getElementById('bet_range');
+        var origins = slider_bet.getElementsByClassName('noUi-origin');
+        origins[0].removeAttribute('disabled');
+        origins[1].removeAttribute('disabled');
+        self.init();
+    }
+
     this.gameWon = function (error, event) {
         if (error) {
             console.log('ERROR:');
             console.log(error);
         } else if (self.account == event.args.player) {
             console.log('gameWinEvent');
-            console.log('event.args.player: ' + event.args.player);
-            console.log('event.args.gameId: ' + event.args.gameId);
-            console.log('event.args.amount: ' + event.args.amount);
-            console.log('event.args.start: ' + event.args.start);
-            console.log('event.args.end: ' + event.args.end);
-            console.log('event.args.number: ' + event.args.number);
-            console.log('event.args.prize: ' + event.args.prize);
-            self.stop(event.args.number);
-            Materialize.toast('WIN!', 150000, 'rounded, green');
-
-            $('#bet-btn').removeClass('disabled');
-            $('#bet-btn').addClass('pulse');
-            $('#amount').attr('disabled', false);
-
-            var slider_bet = document.getElementById('bet_range');
-            var origins = slider_bet.getElementsByClassName('noUi-origin');
-            origins[0].removeAttribute('disabled');
-            origins[1].removeAttribute('disabled');
+            self.rollEnded(event.args.number);
+            Materialize.toast('Game #' + event.args.gameId + ' WIN!', 150000, 'rounded, green');
         }
     }
 
@@ -333,23 +355,8 @@ function Slotthereum() {
             console.log(error);
         } else if (self.account == event.args.player) {
             console.log('gameLooseEvent');
-            console.log('event.args.player: ' + event.args.player);
-            console.log('event.args.gameId: ' + event.args.gameId);
-            console.log('event.args.amount: ' + event.args.amount);
-            console.log('event.args.start: ' + event.args.start);
-            console.log('event.args.end: ' + event.args.end);
-            console.log('event.args.number: ' + event.args.number);
-            console.log('event.args.prize: ' + event.args.prize);
-            self.stop(event.args.number);
-            Materialize.toast('LOOSE!', 150000, 'rounded, red');
-
-            $('#bet-btn').removeClass('disabled');
-            $('#amount').attr('disabled', false);
-
-            var slider_bet = document.getElementById('bet_range');
-            var origins = slider_bet.getElementsByClassName('noUi-origin');
-            origins[0].removeAttribute('disabled');
-            origins[1].removeAttribute('disabled');
+            self.rollEnded(event.args.number);
+            Materialize.toast('Game #' + event.args.gameId + ' LOSE!', 150000, 'rounded, red');
         }
     }
     //
@@ -439,77 +446,55 @@ function Slotthereum() {
               $('#bet-number').html($('input[type=range]').val());
             });
 
-            $(document).ready(function(){
-                var slider_bet = document.getElementById('bet_range');
-                // var slider_amount_1 = document.getElementById('amount_1');
-                // var slider_amount_2 = document.getElementById('amount_2');
-                // var slider_amount_3 = document.getElementById('amount_3');
+            var slider_bet = document.getElementById('bet_range');
+            // var slider_amount_1 = document.getElementById('amount_1');
+            // var slider_amount_2 = document.getElementById('amount_2');
+            // var slider_amount_3 = document.getElementById('amount_3');
 
-                noUiSlider.create(slider_bet, {
-                    start: [0,4],
-                    step: 1,
-                    // tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
-                    tooltips: [ false, false ],
-                    connect: true,
-                    limit: 8,
-                    range: {
-                        'min': 0,
-                        'max': 9
-                    },
-                    pips: { // Show a scale with the slider
-                        mode: 'values',
-                        values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-                        density: 100
-                    }
-                });
-
-                slider_bet.noUiSlider.on('update', function(){
-                    var a = parseInt(slider_bet.noUiSlider.get()[0]);
-                    var b = parseInt(slider_bet.noUiSlider.get()[1]);
-                    $('.bet-number-btn').addClass('lighten-3');
-                    for (var i = a; i <= b; i++){
-                        $('#bet-number-' + i).removeClass('lighten-3');
-                    }
-                    console.log(slider_bet.noUiSlider.get())
-                    self.update_profit();
-                });
-
-                $('#amount').change(function() {
-                    if ($(this).val().length > 7) { 
-                        $(this).val(Number($(this).val()).toFixed(6));
-                    }
-                    self.update_profit();
-                });
-
-                $('#bet-btn').click(function() {
-                    var a = parseInt(slider_bet.noUiSlider.get()[0]);
-                    var b = parseInt(slider_bet.noUiSlider.get()[1]);
-                    var amount = $('#amount').val();
-                    self.placeBet(amount, a, b);
-                });
+            noUiSlider.create(slider_bet, {
+                start: [0,4],
+                step: 1,
+                // tooltips: [ wNumb({ decimals: 0 }), wNumb({ decimals: 0 }) ],
+                tooltips: [ false, false ],
+                connect: true,
+                limit: 6,
+                range: {
+                    'min': 0,
+                    'max': 9
+                },
+                pips: { // Show a scale with the slider
+                    mode: 'values',
+                    values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                    density: 100
+                }
             });
 
-            // self.machine = $('.slot').slotMachine();
+            slider_bet.noUiSlider.on('update', function(){
+                var a = parseInt(slider_bet.noUiSlider.get()[0]);
+                var b = parseInt(slider_bet.noUiSlider.get()[1]);
+                $('.bet-number-btn').addClass('lighten-3');
+                for (var i = a; i <= b; i++){
+                    $('#bet-number-' + i).removeClass('lighten-3');
+                }
+                console.log(slider_bet.noUiSlider.get())
+                self.update_profit();
+            });
 
-            // var slider = document.getElementById('value-slider');
-            // noUiSlider.create(slider, {
-            //     start: [20, 80],
-            //     connect: true,
-            //     step: 1,
-            //     orientation: 'horizontal', // 'horizontal' or 'vertical'
-            //     range: {
-            //         'min': self.minBetAmount,
-            //         'max': self.maxBetAmount
-            //     },
-            //     format: {
-            //       to: function ( value ) {
-            //         return web3.fromWei(value, 'ether');
-            //       },
-            //       from: function ( value ) {
-            //         return value * 1000000000000000000;
-            //       }
-            //     }
-            // });
+            $('#amount').change(function() {
+                if ($(this).val().length > 7) { 
+                    $(this).val(Number($(this).val()).toFixed(6));
+                }
+                self.update_profit();
+            });
+
+            $('#bet-btn').click(function() {
+                var a = parseInt(slider_bet.noUiSlider.get()[0]);
+                var b = parseInt(slider_bet.noUiSlider.get()[1]);
+                var amount = $('#amount').val();
+                self.placeBet(amount, a, b);
+            });
+
+            $('#terms').modal('open');
         });
     }
 
@@ -520,63 +505,60 @@ function Slotthereum() {
         });
     }
 
-    this.renderTabs = function () {
-        self.tabbed++;
-        if (self.tabbed <= 1) {
-            $('#tabs').html('<li class="tab col s2"><a class="active" href="#intro1">Slotthereum</a></li>');
-            for (var i = this.games.length-1; i >= 0; i--) {
-                $('#tabs').append('<li class="tab col s2"><a href="#game_' + this.games[i].id + '_holder">' + this.games[i].minAmount +' ETH</a></li>');
-            }
-            $('#tabs').append('<li class="tab col s2"><a href="#withdraw"><span class="new badge balance" data-badge-caption="ETH"></span>Withdraw</a></li>');
-            $('#tabs').tabs({
-                'swipeable': false,
-                'onShow': function (tab) {
-                    self.selectedGame = 0;
-                    var gameId = parseInt(
-                        tab.selector.replace('#game_', '').replace('_holder', '')
-                    );
-                    if (gameId >= 0) {
-                        self.selectedGame = gameId;
-                    }
-                    console.log('SELECTED GAME: ' + self.selectedGame);
-                },
-            });
-        }
-    };
-
     this.renderResults = function () {
+        this.rendering = true;
         var ret = true;
-        $('#all_games_holder').html('');
-
-        $('#min').html('Min. ' + web3.fromWei(self.minBetAmount, 'ether'));
-        $('#max').html('Max. ' + web3.fromWei(self.maxBetAmount, 'ether'));
-
+        var content = '';
         for (var i = self.games.length-1; i >= 0; i--) {
             var game = self.games[i];
             var html = $('#game_template').html();
             html = html.replace(/{game_id}/g, game.id);
             html = html.replace(/{player}/g, game.player);
-            html = html.replace(/{bet}/g, game.bet);
-            html = html.replace(/{number}/g, game.number);
-            html = html.replace(/{prize}/g, web3.fromWei(game.prize, 'ether'));
+            html = html.replace(/{start}/g, game.start);
+            html = html.replace(/{end}/g, game.end);
             html = html.replace(/{amount}/g, web3.fromWei(game.amount, 'ether'));
+            balls = '';
+            for (var j = 0; j <= 9; j++) {
+                if (j == game.number){
+                    if (game.win) {
+                        balls += '<div class="btn-floating valign-wrapper center-align green bet-number-hist">' + j + '</div>';
+                    } else {
+                        balls += '<div class="btn-floating valign-wrapper center-align red bet-number-hist">' + j + '</div>';
+                    }
+                } else if (j >= game.start && j <= game.end) {
+                    balls += '<div class="btn-floating valign-wrapper center-align blue bet-number-hist">' + j + '</div>';
+                } else{
+                    balls += '<div class="btn-floating valign-wrapper center-align blue lighten-3 bet-number-hist">' + j + '</div>';
+                }
+            }
+            html = html.replace(/{bet}/g, balls);
 
-            var btnHtml = $('#bet_number_template').html().replace(/{number}/g, game.number);
+            // html = html.replace('{color}', 'blue lighten-2');
 
+            // var btnHtml = $('#bet_number_template').html().replace(/{number}/g, game.number);
             if (game.win) {
-                btnHtml = btnHtml.replace('{color}', 'green');
-                html = html.replace('{betButton}', btnHtml);
-                // html = html.replace('{color}', 'green lighten-2');
+                // btnHtml = btnHtml.replace('{color}', 'green');
+                // html = html.replace('{betButton}', btnHtml);
+                html = html.replace('{color}', 'green lighten-3');
+                html = html.replace(/{prize}/g, web3.fromWei(game.prize, 'ether') + ' ETH');
             } else {
-                btnHtml = btnHtml.replace('{color}', 'red');
-                html = html.replace('{betButton}', btnHtml);
-                // html = html.replace('{color}', 'red lighten-2');
+                // btnHtml = btnHtml.replace('{color}', 'red');
+                // html = html.replace('{betButton}', btnHtml);
+                html = html.replace('{color}', 'red lighten-3');
+                html = html.replace(/{prize}/g, '1 WEI');
             }
 
-            $('#all_games_holder').append(html);
+            content += html;
+            // $('#all_games_holder').append(html);
         }
 
+        $('#all_games_holder').html(content);
+
+        $('#min').html('Min. ' + web3.fromWei(self.minBetAmount, 'ether'));
+        $('#max').html('Max. ' + web3.fromWei(self.maxBetAmount, 'ether'));
+
         self.renderAllIdenticons();
+        $('.tooltipped').tooltip({delay: 60});
         return ret;
     };
     //
@@ -587,18 +569,21 @@ function Slotthereum() {
     this.initAccounts();
     this.initUIElements();
     this.initEvents();
+    this.rendering = false;
 }
 
-function Game(slotthereum, player, gameId) {
+function Game(slotthereum, gameId) {
     this.slotthereum = slotthereum;
-    this.player = player;
     this.id = parseInt(gameId);
     this.initialized = false;
 
     this.contractInstance = slotthereum.contractInstance;
 
+    this.player = '';
     this.amount = -1;
-    this.bet = -1;
+    this.start = -1;
+    this.end = -1;
+    this.prize = -1;
     this.pointer = -1;
     this.number = -1;
     this.hash = '';
@@ -609,77 +594,87 @@ function Game(slotthereum, player, gameId) {
     this.init = function () {
         async.waterfall([
             function(done) {
-                console.log('Game id: ' + self.id);
-                console.log('player: ' + self.player);
-                console.log('id: ' + self.id);
-
-                self.contractInstance.getGameAmount(self.player, self.id, function(error, result){
+                self.contractInstance.getGamePlayer(self.id, function(error, result){
+                    self.player = result.valueOf();
+                    done(error, self.player);
+                });
+            },
+            function(player, done) {
+                // console.log('Game id: ' + self.id);
+                self.contractInstance.getGameAmount(self.id, function(error, result){
                     self.amount = result.valueOf();
                     done(error, self.amount);
                 });
             },
             function(amount, done) {
-                console.log('Game amount: ' + self.amount);
-                self.contractInstance.getGameBet(self.player, self.id, function(error, result) {
-                    self.bet = result.valueOf();
-                    done(error, self.bet);
+                // console.log('Game amount: ' + self.amount);
+                self.contractInstance.getGameStart(self.id, function(error, result) {
+                    self.start = result.valueOf();
+                    done(error, self.start);
                 });
             },
-            function(bet, done) {
-                console.log('Game bet: ' + self.bet);
-                self.contractInstance.getGamePointer(self.player, self.id, function(error, result) {
-                    self.pointer = result.valueOf();
-                    done(error, self.pointer);
+            function(start, done) {
+                // console.log('Game start: ' + self.start);
+                self.contractInstance.getGameEnd(self.id, function(error, result) {
+                    self.end = result.valueOf();
+                    done(error, self.end);
                 });
             },
-            function(pointer, done) {
-                console.log('Game pointer: ' + self.pointer);
-                self.contractInstance.getGameNumber(self.player, self.id, function(error, result) {
+            function(end, done) {
+                // console.log('Game end: ' + self.end);
+                self.contractInstance.getGameNumber(self.id, function(error, result) {
                     self.number = result.valueOf();
                     done(error, self.number);
                 });
             },
             function(number, done) {
-                console.log('Game number: ' + self.number);
-                self.contractInstance.getGameHash(self.player, self.id, function(error, result) {
+                // console.log('Game number: ' + self.number);
+                self.contractInstance.getGameHash(self.id, function(error, result) {
                     self.hash = result.valueOf();
                     done(error, self.hash);
                 });
             },
             function(hash, done) {
-                console.log('Game hash: ' + self.hash);
-                self.contractInstance.getGameWin(self.player, self.id, function(error, result) {
+                // console.log('Game hash: ' + self.hash);
+                self.contractInstance.getGameWin(self.id, function(error, result) {
                     self.win = result.valueOf();
+                    if (!self.win) {
+                        self.slotthereum.looseCount++;
+                    } else {
+                        self.slotthereum.winCount++;
+                    }
                     done(error, self.win);
                 });
             },
             function(win, done) {
-                console.log('Game win: ' + self.win);
-                self.contractInstance.getGamePrize(self.player, self.id, function(error, result) {
+                // console.log('Game win: ' + self.win);
+                self.contractInstance.getGamePrize(self.id, function(error, result) {
                     self.prize = result.valueOf();
+                    self.initialized = true;
+                    self.render();
                     done(error, self.win);
                 });
-            },
-            function(prize, done) {
-                console.log('Game prize: ' + self.prize);
-                self.initialized = true;
-                self.render();
-                done(null, null);
-            },
+            }
+            // function(prize, done) {
+            //     // console.log('Game prize: ' + self.prize);
+            //     self.initialized = true;
+            //     self.render();
+            //     done(null, null);
+            // },
         ],
         function (err) {
             if (err) {
-                console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                 console.error(err);
             }
         });
     }
 
     this.render = function () {
-        console.log('redering player: ' + self.player + ' game: ' + self.id);
-
+        console.log('redering game: ' + self.id);
         if(self.slotthereum.areAllGamesInitialized()) {
             console.log('ALL GAMES INITIALIZED!!!');
+            $('#wins').val(self.slotthereum.winCount);
+            $('#losses').val(self.slotthereum.looseCount);
             self.slotthereum.renderResults();
         }
     }

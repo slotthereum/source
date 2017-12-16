@@ -194,12 +194,17 @@ body {
   margin-bottom: 40px !important;
 }
 
-.round-data td {
+/*.round-data td {
   font-weight: 100 !important;
 }
 
 .round-data {
   border-top: 1px solid #e0e0e0;
+}
+*/
+
+.round-data span {
+  font-size: 20px;
 }
 
 .page-footer {
@@ -269,7 +274,7 @@ body {
 }
 
 .round {
-  margin-top: 30px !important;
+  /*margin-top: 30px !important;*/
 }
 
 .main-container {
@@ -287,7 +292,7 @@ body {
 
 .tabs {
   width: 80% !important;
-  z-index: 101;
+  z-index: 98;
   height: 56px !important;
 }
 
@@ -334,7 +339,7 @@ body {
 
 #dropdown-nav {
   padding: 0px !important;
-  z-index: 1000 !important;
+  z-index: 99 !important;
   top: 64px !important;
   right: 0px !important;
 }
@@ -403,7 +408,7 @@ body {
 }
 
 .navbar-fixed nav {
-  z-index: 100;
+  z-index: 98;
 }
 
 .dropdown-content li > a, .dropdown-content li > span {
@@ -420,11 +425,21 @@ body {
 }
 
 .game-player {
-  top: 73px !important;
-  left: 25px !important;
+  top: 0px !important;
+  left: 0px !important;
+  position: relative !important;
   width: 32px;
   height: 32px;
+  float: left;
+  color: transparent;
 }
+
+.game-bet {
+  min-width: 90px !important;
+/*  position: absolute;
+  top: 23px;
+  right: 70px;
+*/}
 
 /*.card-content {
   padding-top: 0px !important;
@@ -439,8 +454,16 @@ body {
 }
 
 .game-content {
+  min-width: 130px;
   min-height: auto !important;
-  padding-top: 25px !important;
+  padding: 5px !important;
+  padding-left: 25px !important;
+}
+
+.game-content table td:last-child {
+  text-align: right;
+  padding-right: 30px !important;
+  width: 210px;
 }
 
 .thumb {
@@ -530,7 +553,7 @@ label {
   overflow: hidden;
   position: relative;
   margin: auto;
-  margin-top: 0px;
+  margin-top: 10px;
 }
 
 .range-field {
@@ -578,14 +601,32 @@ label {
 
 .bet-number-btn {
   cursor: default;
+  margin: 3px;
 }
 
-#min_amount, #max_amount, #min_profit, #max_profit, #wins, #losses {
-  height: 5rem;
+.bet-number-hist {
+  cursor: default;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  margin: 3px;
+  line-height: 26px;
+}
+
+#min_amount, #max_amount, #min_profit, #max_profit {
+  height: 1.3rem;
+  font-size: 1.29rem;
+  border: none;
+}
+
+#wins, #losses {
+  height: 3.1rem;
   font-size: 3rem;
+  border: none;
 }
 
 #amount {
+  margin-top: 20px;
   height: 5rem;
   font-size: 3rem;
 }
@@ -594,6 +635,10 @@ label {
   border-bottom: 1px solid #2196f3 !important;
   -webkit-box-shadow: 0 1px 0 0 #2196f3 !important;
   box-shadow: 0 1px 0 0 #2196f3 !important;
+}
+
+#amount:disabled {
+  color: rgba(33,150,243,1);
 }
 
 #amount.disabled {
@@ -610,14 +655,72 @@ label {
 #amount_eth {
   position: relative;
   top: 65px;
+  color: #FFF !important;
   right: -45%;  
 }
 
-#play-now-btn, #play-now-btn2, #bet-btn {
+#amount_eth2 {
+  position: relative;
+  /*top: 65px;*/
+  color: #949494 !important;
+  /*right: -45%;  */
+}
+
+#play-now-btn, #play-now-btn2 {
   opacity: 0;
 }
 
 #bet-btn {
   margin-top: 45px;
   margin-bottom: 25px;
+}
+
+h5, h6 {
+  line-height: 150%;
+}
+
+nav .brand-logo {
+  top: 0px;
+}
+
+#tabs {
+  height: 56px !important;
+}
+
+.tab:first-child {
+  display: none;
+}
+
+#logo-btn {
+  display: none;
+}
+
+#avatar {
+  display: none !important;
+}
+
+@media only screen and (min-width: 601px) {
+  .tab:first-child {
+    display: block;
+  }
+
+  #tabs {
+    height: 64px !important;
+  }
+
+  #logo-btn {
+    display: block;
+  }
+
+  #avatar {
+    display: block !important;
+  }
+}
+
+#tx {
+  color: #FFF;
+}
+
+.collection {
+  margin: 0 !important;
 }

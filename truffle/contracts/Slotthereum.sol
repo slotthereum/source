@@ -1,4 +1,5 @@
-pragma solidity ^0.4.15;
+pragma solidity ^0.4.16;
+
 
 contract Owned {
     address owner;
@@ -9,31 +10,29 @@ contract Owned {
         }
     }
 
-    function Owned() {
+    function Owned() internal {
         owner = msg.sender;
     }
 }
 
 
 contract Mortal is Owned {
-    
-    function kill() {
-        if (msg.sender == owner)
-            selfdestruct(owner);
+    function kill() public onlyowner {
+        selfdestruct(owner);
     }
 }
 
 
 contract Slotthereum is Mortal {
 
-    mapping (address => Game[]) private games;      // games per address
-
-    uint private minBetAmount = 10000000000000000;  // minimum amount per bet
-    uint private maxBetAmount = 5000000000000000000;  // maximum amount per bet
-    uint private pointer = 1;                       // block pointer
-    uint private numberOfPlayers = 0;               // number of players
+    Game[] public games;                              // games
+    uint public numberOfGames = 0;                    // number of games
+    uint private minBetAmount = 100000000000000;      // minimum amount per bet
+    uint private maxBetAmount = 1000000000000000000;  // maximum amount per bet
+    uint8 private pointer = 1;                        // block pointer
 
     struct Game {
+        address player;
         uint id;
         uint amount;
         uint8 start;
@@ -46,6 +45,15 @@ contract Slotthereum is Mortal {
 
     event MinBetAmountChanged(uint amount);
     event MaxBetAmountChanged(uint amount);
+    event PointerChanged(uint8 value);
+
+    event GameRoll(
+        address indexed player,
+        uint indexed gameId,
+        uint8 start,
+        uint8 end,
+        uint amount
+    );
 
     event GameWin(
         address indexed player,
@@ -92,17 +100,17 @@ contract Slotthereum is Mortal {
     }
 
     function getBlockHash(uint i) internal constant returns (bytes32 blockHash) {
-        if (i > 255) {
+        if (i >= 255) {
             i = 255;
         }
-        if (i < 0) {
+        if (i <= 0) {
             i = 1;
         }
         blockHash = block.blockhash(block.number - i);
     }
 
     function getNumber(bytes32 _a) internal constant returns (uint8) {
-        uint8 mint = 0; // pointer?
+        uint8 mint = pointer;
         for (uint i = 31; i >= 1; i--) {
             if ((uint8(_a[i]) >= 48) && (uint8(_a[i]) <= 57)) {
                 return uint8(_a[i]) - 48;
@@ -122,7 +130,7 @@ contract Slotthereum is Mortal {
 
         uint8 counter = end - start + 1;
 
-        if (counter > 9) {
+        if (counter > 7) {
             return false;
         }
 
@@ -130,95 +138,129 @@ contract Slotthereum is Mortal {
             return false;
         }
 
-        uint gameId = games[msg.sender].length;
-        games[msg.sender].length += 1;
-        games[msg.sender][gameId].id = gameId;
-        games[msg.sender][gameId].amount = msg.value;
-        games[msg.sender][gameId].start = start;
-        games[msg.sender][gameId].end = end;
-        games[msg.sender][gameId].hash = getBlockHash(pointer);
-        games[msg.sender][gameId].number = getNumber(games[msg.sender][gameId].hash);
-        // set pointer to number ?
+        uint gameId = games.length;
+        games.length++;
+        numberOfGames++;
 
-        games[msg.sender][gameId].prize = 1;
-        if ((games[msg.sender][gameId].number >= start) && (games[msg.sender][gameId].number <= end)) {
-            games[msg.sender][gameId].win = true;
+        GameRoll(msg.sender, gameId, start, end, msg.value);
+
+        games[gameId].id = gameId;
+        games[gameId].player = msg.sender;
+        games[gameId].amount = msg.value;
+        games[gameId].start = start;
+        games[gameId].end = end;
+        games[gameId].hash = getBlockHash(pointer);
+        games[gameId].number = getNumber(games[gameId].hash);
+        
+        if (pointer == games[gameId].number) {
+            if (pointer <= 4) {
+                pointer++;
+            } else {
+                pointer--;
+            }
+        } else {
+            pointer = games[gameId].number;
+        }
+        
+        games[gameId].prize = 1;
+
+        if ((games[gameId].number >= start) && (games[gameId].number <= end)) {
+            games[gameId].win = true;
             uint dec = msg.value / 10;
             uint parts = 10 - counter;
-            games[msg.sender][gameId].prize = msg.value + dec * parts;
+            games[gameId].prize = msg.value + dec * parts;
         }
 
-        msg.sender.transfer(games[msg.sender][gameId].prize);
+        msg.sender.transfer(games[gameId].prize);
 
         notify(
             msg.sender,
             gameId,
             start,
             end,
-            games[msg.sender][gameId].number,
+            games[gameId].number,
             msg.value,
-            games[msg.sender][gameId].prize,
-            games[msg.sender][gameId].win
+            games[gameId].prize,
+            games[gameId].win
         );
 
         return true;
     }
 
-    function setMinBetAmount(uint _minBetAmount) onlyowner returns (uint) {
+    function withdraw(uint amount) onlyowner public returns (uint) {
+        if (amount <= this.balance) {
+            msg.sender.transfer(amount);
+            return amount;
+        }
+        return 0;
+    }
+
+    function setMinBetAmount(uint _minBetAmount) onlyowner public returns (uint) {
         minBetAmount = _minBetAmount;
         MinBetAmountChanged(minBetAmount);
         return minBetAmount;
     }
 
-    function setMaxBetAmount(uint _maxBetAmount) onlyowner returns (uint) {
+    function setMaxBetAmount(uint _maxBetAmount) onlyowner public returns (uint) {
         maxBetAmount = _maxBetAmount;
         MaxBetAmountChanged(maxBetAmount);
         return maxBetAmount;
     }
 
-    function getGameIds(address player) constant returns(uint[] memory ids) {
-        ids = new uint[](games[player].length);
-        for (uint i = 0; i < games[player].length; i++) {
-            ids[i] = games[player][i].id;
+    function setPointer(uint8 _pointer) onlyowner public returns (uint) {
+        pointer = _pointer;
+        PointerChanged(pointer);
+        return pointer;
+    }
+
+    function getGameIds() public constant returns(uint[]) {
+        uint[] memory ids = new uint[](games.length);
+        for (uint i = 0; i < games.length; i++) {
+            ids[i] = games[i].id;
         }
+        return ids;
     }
 
-    function getGameAmount(address player, uint gameId) constant returns(uint) {
-        return games[player][gameId].amount;
+    function getGamePlayer(uint gameId) public constant returns(address) {
+        return games[gameId].player;
     }
 
-    function getGameStart(address player, uint gameId) constant returns(uint8) {
-        return games[player][gameId].start;
+    function getGameAmount(uint gameId) public constant returns(uint) {
+        return games[gameId].amount;
     }
 
-    function getGameEnd(address player, uint gameId) constant returns(uint8) {
-        return games[player][gameId].end;
+    function getGameStart(uint gameId) public constant returns(uint8) {
+        return games[gameId].start;
     }
 
-    function getGameHash(address player, uint gameId) constant returns(bytes32) {
-        return games[player][gameId].hash;
+    function getGameEnd(uint gameId) public constant returns(uint8) {
+        return games[gameId].end;
     }
 
-    function getGameNumber(address player, uint gameId) constant returns(uint8) {
-        return games[player][gameId].number;
+    function getGameHash(uint gameId) public constant returns(bytes32) {
+        return games[gameId].hash;
     }
 
-    function getGameWin(address player, uint gameId) constant returns(bool) {
-        return games[player][gameId].win;
+    function getGameNumber(uint gameId) public constant returns(uint8) {
+        return games[gameId].number;
     }
 
-    function getGamePrize(address player, uint gameId) constant returns(uint) {
-        return games[player][gameId].prize;
+    function getGameWin(uint gameId) public constant returns(bool) {
+        return games[gameId].win;
     }
 
-    function getMinBetAmount() constant returns(uint) {
+    function getGamePrize(uint gameId) public constant returns(uint) {
+        return games[gameId].prize;
+    }
+
+    function getMinBetAmount() public constant returns(uint) {
         return minBetAmount;
     }
 
-    function getMaxBetAmount() constant returns(uint) {
+    function getMaxBetAmount() public constant returns(uint) {
         return maxBetAmount;
     }
 
-    function () payable {
+    function () public payable {
     }
 }
