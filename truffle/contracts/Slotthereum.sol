@@ -41,6 +41,7 @@ contract Slotthereum is Mortal {
         uint8 number;
         bool win;
         uint prize;
+        uint blockNumber;
     }
 
     event MinBetAmountChanged(uint amount);
@@ -89,9 +90,10 @@ contract Slotthereum is Mortal {
         seed = keccak256(nonce, seed, random(0, 255));
     }
 
-    function getNumber() public returns (uint8) {
-        newSeed();
-        return random8(0,9);
+    function getNumber(bytes32 hash) public returns (uint8) {
+        nonce++;
+        seed = keccak256(hash, nonce);
+        return uint8(keccak256(seed))%(0+9)-0;
     }
 
     function notify(address player, uint gameId, uint8 start, uint8 end, uint8 number, uint amount, uint prize, bool win) internal {
@@ -149,29 +151,39 @@ contract Slotthereum is Mortal {
         games[gameId].start = start;
         games[gameId].end = end;
         games[gameId].prize = 1;
-        games[gameId].number = getNumber();
+        games[gameId].blockNumber = block.number;
+        
+        if (gameId > 1) {
+            uint lastGameId = gameId - 1;
+            if (games[lastGameId].blockNumber != games[gameId].blockNumber) {
+                games[lastGameId].number = getNumber(block.blockhash(games[gameId].blockNumber));
+        
+                if ((games[lastGameId].number >= games[lastGameId].start) && (games[lastGameId].number <= games[lastGameId].end)) {
+                    games[lastGameId].win = true;
+                    uint dec = games[lastGameId].amount / 10;
+                    uint parts = 10 - counter;
+                    games[lastGameId].prize = games[lastGameId].amount + dec * parts;
+                }
+        
+                games[lastGameId].player.transfer(games[lastGameId].prize);
+        
+                notify(
+                    games[lastGameId].player,
+                    lastGameId,
+                    games[lastGameId].start,
+                    games[lastGameId].end,
+                    games[lastGameId].number,
+                    games[lastGameId].amount,
+                    games[lastGameId].prize,
+                    games[lastGameId].win
+                );
 
-        if ((games[gameId].number >= start) && (games[gameId].number <= end)) {
-            games[gameId].win = true;
-            uint dec = msg.value / 10;
-            uint parts = 10 - counter;
-            games[gameId].prize = msg.value + dec * parts;
+                return true;
+            }
+            else {
+                return false;
+            }
         }
-
-        msg.sender.transfer(games[gameId].prize);
-
-        notify(
-            msg.sender,
-            gameId,
-            start,
-            end,
-            games[gameId].number,
-            msg.value,
-            games[gameId].prize,
-            games[gameId].win
-        );
-
-        return true;
     }
 
     function withdraw(uint amount) onlyowner public returns (uint) {
