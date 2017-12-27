@@ -25,11 +25,12 @@ contract Mortal is Owned {
 
 contract Slotthereum is Mortal {
 
-    Game[] public games;                              // games
-    uint public numberOfGames = 0;                    // number of games
-    uint private minBetAmount = 100000000000000;      // minimum amount per bet
-    uint private maxBetAmount = 1000000000000000000;  // maximum amount per bet
-    uint8 private pointer = 1;                        // block pointer
+    Game[] public games;                                // games
+    uint public numberOfGames = 0;                      // number of games
+    uint private minBetAmount = 100000000000000;        // minimum amount per bet
+    uint private maxBetAmount = 1000000000000000000;    // maximum amount per bet
+    bytes32 private seed;
+    uint private nonce = 1;
 
     struct Game {
         address player;
@@ -37,7 +38,6 @@ contract Slotthereum is Mortal {
         uint amount;
         uint8 start;
         uint8 end;
-        bytes32 hash;
         uint8 number;
         bool win;
         uint prize;
@@ -75,6 +75,25 @@ contract Slotthereum is Mortal {
         uint prize
     );
 
+    function random(uint8 min, uint8 max) public returns (uint) {
+        nonce++;
+        return uint(keccak256(nonce, seed))%(min+max)-min;
+    }
+
+    function random8(uint8 min, uint8 max) public returns (uint8) {
+        nonce++;
+        return uint8(keccak256(nonce, seed))%(min+max)-min;
+    }
+
+    function newSeed() public {
+        seed = keccak256(nonce, seed, random(0, 255));
+    }
+
+    function getNumber() public returns (uint8) {
+        newSeed();
+        return random8(0,9);
+    }
+
     function notify(address player, uint gameId, uint8 start, uint8 end, uint8 number, uint amount, uint prize, bool win) internal {
         if (win) {
             GameWin(
@@ -97,26 +116,6 @@ contract Slotthereum is Mortal {
                 prize
             );
         }
-    }
-
-    function getBlockHash(uint i) internal constant returns (bytes32 blockHash) {
-        if (i >= 255) {
-            i = 255;
-        }
-        if (i <= 0) {
-            i = 1;
-        }
-        blockHash = block.blockhash(block.number - i);
-    }
-
-    function getNumber(bytes32 _a) internal constant returns (uint8) {
-        uint8 mint = pointer;
-        for (uint i = 31; i >= 1; i--) {
-            if ((uint8(_a[i]) >= 48) && (uint8(_a[i]) <= 57)) {
-                return uint8(_a[i]) - 48;
-            }
-        }
-        return mint;
     }
 
     function placeBet(uint8 start, uint8 end) public payable returns (bool) {
@@ -149,20 +148,8 @@ contract Slotthereum is Mortal {
         games[gameId].amount = msg.value;
         games[gameId].start = start;
         games[gameId].end = end;
-        games[gameId].hash = getBlockHash(pointer);
-        games[gameId].number = getNumber(games[gameId].hash);
-        
-        if (pointer == games[gameId].number) {
-            if (pointer <= 4) {
-                pointer++;
-            } else {
-                pointer--;
-            }
-        } else {
-            pointer = games[gameId].number;
-        }
-        
         games[gameId].prize = 1;
+        games[gameId].number = getNumber();
 
         if ((games[gameId].number >= start) && (games[gameId].number <= end)) {
             games[gameId].win = true;
@@ -207,12 +194,6 @@ contract Slotthereum is Mortal {
         return maxBetAmount;
     }
 
-    function setPointer(uint8 _pointer) onlyowner public returns (uint) {
-        pointer = _pointer;
-        PointerChanged(pointer);
-        return pointer;
-    }
-
     function getGameIds() public constant returns(uint[]) {
         uint[] memory ids = new uint[](games.length);
         for (uint i = 0; i < games.length; i++) {
@@ -235,10 +216,6 @@ contract Slotthereum is Mortal {
 
     function getGameEnd(uint gameId) public constant returns(uint8) {
         return games[gameId].end;
-    }
-
-    function getGameHash(uint gameId) public constant returns(bytes32) {
-        return games[gameId].hash;
     }
 
     function getGameNumber(uint gameId) public constant returns(uint8) {
