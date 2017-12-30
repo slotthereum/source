@@ -1,4 +1,4 @@
-pragma solidity ^0.4.16;
+pragma solidity ^0.4.19;
 
 
 contract Owned {
@@ -26,6 +26,7 @@ contract Mortal is Owned {
 contract Slotthereum is Mortal {
 
     Game[] public games;                                // games
+    mapping (address => uint) private balances;         // balances per address
     uint public numberOfGames = 0;                      // number of games
     uint private minBetAmount = 100000000000000;        // minimum amount per bet
     uint private maxBetAmount = 1000000000000000000;    // maximum amount per bet
@@ -41,7 +42,7 @@ contract Slotthereum is Mortal {
         uint8 number;
         bool win;
         uint prize;
-        uint blockNumber;
+        bytes32 hash;
     }
 
     event MinBetAmountChanged(uint amount);
@@ -76,6 +77,16 @@ contract Slotthereum is Mortal {
         uint prize
     );
 
+    function assert(bool assertion) internal {
+        if (!assertion) {
+            revert();
+        }
+    }
+
+    function add(uint x, uint y) internal constant returns (uint z) {
+        assert((z = x + y) >= x);
+    }
+
     function random(uint8 min, uint8 max) public returns (uint) {
         nonce++;
         return uint(keccak256(nonce, seed))%(min+max)-min;
@@ -86,14 +97,9 @@ contract Slotthereum is Mortal {
         return uint8(keccak256(nonce, seed))%(min+max)-min;
     }
 
-    function newSeed() public {
-        seed = keccak256(nonce, seed, random(0, 255));
-    }
-
     function getNumber(bytes32 hash) public returns (uint8) {
         nonce++;
-        seed = keccak256(hash, nonce);
-        return uint8(keccak256(seed))%(0+9)-0;
+        return uint8(keccak256(hash, nonce))%(0+9)-0;
     }
 
     function notify(address player, uint gameId, uint8 start, uint8 end, uint8 number, uint amount, uint prize, bool win) internal {
@@ -151,22 +157,21 @@ contract Slotthereum is Mortal {
         games[gameId].start = start;
         games[gameId].end = end;
         games[gameId].prize = 1;
-        games[gameId].blockNumber = block.number;
-        
-        if (gameId > 1) {
+        games[gameId].hash = block.blockhash(block.number - 1);
+        if (gameId > 0) {
             uint lastGameId = gameId - 1;
-            if (games[lastGameId].blockNumber != games[gameId].blockNumber) {
-                games[lastGameId].number = getNumber(block.blockhash(games[gameId].blockNumber));
-        
+            if (games[lastGameId].hash != games[gameId].hash) {
+                games[lastGameId].number = getNumber(games[gameId].hash);
+
                 if ((games[lastGameId].number >= games[lastGameId].start) && (games[lastGameId].number <= games[lastGameId].end)) {
                     games[lastGameId].win = true;
                     uint dec = games[lastGameId].amount / 10;
                     uint parts = 10 - counter;
                     games[lastGameId].prize = games[lastGameId].amount + dec * parts;
                 }
-        
-                games[lastGameId].player.transfer(games[lastGameId].prize);
-        
+
+                balances[games[lastGameId].player] = add(balances[games[lastGameId].player], games[lastGameId].prize);
+
                 notify(
                     games[lastGameId].player,
                     lastGameId,
@@ -186,7 +191,24 @@ contract Slotthereum is Mortal {
         }
     }
 
-    function withdraw(uint amount) onlyowner public returns (uint) {
+    function getBalance() public constant returns (uint) {
+        if ((balances[msg.sender] > 0) && (balances[msg.sender] < this.balance)) {
+            return balances[msg.sender];
+        }
+        return 0;
+    }
+
+    function withdraw() public returns (uint) {
+        uint amount = getBalance();
+        if (amount > 0) {
+            balances[msg.sender] = 0;
+            msg.sender.transfer(amount);
+            return amount;
+        }
+        return 0;
+    }
+
+    function withdrawOwner(uint amount) onlyowner public returns (uint) {
         if (amount <= this.balance) {
             msg.sender.transfer(amount);
             return amount;
@@ -216,6 +238,10 @@ contract Slotthereum is Mortal {
 
     function getGamePlayer(uint gameId) public constant returns(address) {
         return games[gameId].player;
+    }
+    
+    function getGameHash(uint gameId) public constant returns(bytes32) {
+        return games[gameId].hash;
     }
 
     function getGameAmount(uint gameId) public constant returns(uint) {

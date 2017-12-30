@@ -49,8 +49,9 @@
 
       <ul id="tabs" class="tabs tabs-fixed-width main-navbar">
         <li class="tab col s2"><a class="active" href="#intro">Slotthereum</a></li>
-        <li class="tab col s2"><a class="active" href="#play-now">Play Now</a></li>
-        <li class="tab col s2"><a class="active" href="#latest-results">Results</a></li>
+        <li class="tab col s2"><a href="#play-now">Play Now</a></li>
+        <li class="tab col s2"><a href="#latest-results">Results</a></li>
+        <li class="tab col s2"><a href="#withdraw"><span class="new badge balance" data-badge-caption="ETH"></span>Withdraw</a></li>
       </ul>
   </div>
 
@@ -237,7 +238,6 @@
     </div>
 
     <div id="latest-results" class="col s12">
-
       <div class="row">
         <div class="col s6">
           <ul class="collection with-header left-align">
@@ -259,6 +259,36 @@
           <div id="all_games_holder">
             <div class="progress blue lighten-4">
                 <div class="indeterminate orange lighten-2"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="withdraw" class="col s12">
+      <div class="row">
+        <div class="col s12 m12">
+          <div class="card green lighten-2 z-depth-1 round">
+            <div class="card-content white-text">
+              <span class="card-title"><i class="material-icons">monetization_on</i> Withdraw</span>
+              <table class="round-data">
+                <tbody>
+                  <tr>
+                    <td class="right-align">Account:</td>
+                    <td class="left-align title"><span id="current_account_number"></span></td>
+                  </tr>
+                  <tr>
+                    <td class="right-align">Balance:</td>
+                    <td class="left-align title"><span id="current_account_balance"></span></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div id="withdraw-confirmations">
+                <span id="withdraw-transaction-id" class="right"></span>
+              </div>
+
+              <a id="withdraw-btn" class="waves-effect waves btn green" href="#!"><i class="material-icons left">attach_money</i> WITHDRAW</a>
             </div>
           </div>
         </div>
@@ -346,7 +376,7 @@
     <div class="container">
       <div class="row">
         <div class="col l12 s12 white-text">
-          <a class="waves-effect waves btn-flat left white-text" href="https://etherscan.io/address/0x935E177394a2D1c1e99236813274fa34F8f0C047#code" target="_blank"><i class="material-icons left">code</i>CONTRACT</a>
+          <a class="waves-effect waves btn-flat left white-text" href="https://etherscan.io/address/0x96c44e3b343e20162301d7dbfbf76396d0743a5b#code" target="_blank"><i class="material-icons left">code</i>CONTRACT</a>
           <a id="trollbox_btn" class="waves-effect waves btn-flat right white-text"><i class="material-icons left">chat</i>CHAT</a>
         </div>
       </div>
@@ -414,11 +444,11 @@
 
         // Net check
         web3.version.getNetwork((err, netId) => {
-            window.contract_address = '0x537c7b0ad61e980ed3acfbd0b83a02ea18baffa5';  // testrpc
+            window.contract_address = '0x537c7b0ad61e980ed3acfbd0b83a02ea18baffa5';         // testrpc
             switch (netId) {
                 case '1':
                     console.log('This is mainnet')
-                    window.contract_address = '0x935E177394a2D1c1e99236813274fa34F8f0C047'  // mainnet
+                    window.contract_address = '0x16e770382101aeb56319b49e94ead9c8d78c2461'  // mainnet
                     break
                 case '2':
                     console.log('This is the deprecated Morden test network.')
